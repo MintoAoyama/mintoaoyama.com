@@ -33,7 +33,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
   // Let WebLLM model fetches (huggingface CDN etc.) pass through — they use IndexedDB cache
-  if (!url.origin.includes(self.location.origin)) {
+  if (url.origin !== self.location.origin) {
     return;
   }
 
