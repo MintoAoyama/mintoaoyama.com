@@ -2,8 +2,8 @@ const CACHE_VERSION = 'v1';
 const CACHE_NAME = `emojis-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
-  '/',
-  '/emoji.json',
+  './',
+  './emoji.json',
 ];
 
 // Install: precache app shell
