@@ -1,8 +1,7 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `emojis-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
-  './',
   './emoji.json',
 ];
 
