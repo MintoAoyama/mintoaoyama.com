@@ -334,6 +334,30 @@
       code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.75em; }
       .no-results { text-align: center; color: var(--text3); padding: 2rem 0; }
 
+      /* ── Match badges ─────────────────────────────────────────────── */
+      .match-badge {
+        font-size: 0.68rem;
+        font-weight: 600;
+        padding: 0.15rem 0.45rem;
+        border-radius: 99px;
+        border: 1px solid;
+        white-space: nowrap;
+        cursor: default;
+        letter-spacing: 0.02em;
+      }
+      .match-cldr {
+        background: color-mix(in srgb, var(--ok) 12%, transparent);
+        color: var(--ok);
+        border-color: color-mix(in srgb, var(--ok) 35%, transparent);
+      }
+      .match-dict, .match-llm {
+        background: color-mix(in srgb, var(--accent) 10%, transparent);
+        color: var(--accent);
+        border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+      }
+      .card-cldr { border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+      .card-cldr:hover { border-color: var(--ok); }
+
       /* ── Update banner ────────────────────────────────────────────── */
       #update-banner {
         position: fixed;
@@ -365,7 +389,7 @@
       }
       #update-btn:hover { opacity: 0.85; }
     </style>
-    <script type="module" crossorigin src="/emojis/assets/index-64CwHzyZ.js"></script>
+    <script type="module" crossorigin src="/emojis/assets/index-DrAxZUwl.js"></script>
   </head>
   <body>
 
