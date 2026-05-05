@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="coi-serviceworker.js"></script>
     <meta name="color-scheme" content="light dark" />
     <title>emoji:s</title>
     <style>
@@ -364,7 +365,7 @@
       }
       #update-btn:hover { opacity: 0.85; }
     </style>
-    <script type="module" crossorigin src="/emojis/assets/index-BnU4KwbS.js"></script>
+    <script type="module" crossorigin src="/emojis/assets/index-BYFulPNO.js"></script>
   </head>
   <body>
 
@@ -392,6 +393,10 @@
             <button class="seg-btn lang-btn" data-lang="ja">日本語</button>
             <button class="seg-btn lang-btn" data-lang="en">English</button>
           </div>
+        </div>
+        <div class="setting-row">
+          <span class="setting-row-label" id="model-label">Model</span>
+          <span id="model-name" style="font-size:0.78rem;color:var(--text2);word-break:break-all;"></span>
         </div>
       </div>
     </div>
