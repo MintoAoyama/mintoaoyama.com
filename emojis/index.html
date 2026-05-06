@@ -473,6 +473,80 @@
       }
       #update-btn:hover { opacity: 0.85; }
 
+      /* ── Download warning modal ────────────────────────────────────── */
+      #download-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 1100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      #download-modal.open { display: flex; }
+      #download-modal-box {
+        background: var(--bg);
+        color: var(--text);
+        border-radius: 12px;
+        max-width: 420px;
+        width: 100%;
+        padding: 1.75rem 1.75rem 1.5rem;
+        box-shadow: var(--popup-shadow);
+        border: 1px solid var(--border);
+      }
+      #download-modal-box h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+      #download-modal-box .dm-body {
+        font-size: 0.88rem;
+        line-height: 1.65;
+        color: var(--text);
+        margin: 0 0 0.85rem;
+      }
+      #download-modal-box .dm-size {
+        font-size: 0.82rem;
+        color: var(--text2);
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.55rem 0.75rem;
+        margin: 0 0 1.25rem;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      #download-modal-box .dm-actions {
+        display: flex;
+        gap: 0.6rem;
+        justify-content: flex-end;
+      }
+      #download-cancel-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: none;
+        color: var(--text2);
+        font-size: 0.88rem;
+        cursor: pointer;
+      }
+      #download-cancel-btn:hover { background: var(--bg2); }
+      #download-ok-btn {
+        padding: 0.5rem 1.1rem;
+        border-radius: 7px;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      #download-ok-btn:hover { opacity: 0.87; }
+
       /* ── Help modal h3 ─────────────────────────────────────────────── */
       #help-modal h3 {
         margin: 1.5rem 0 0.8rem 0;
@@ -536,7 +610,7 @@
       .suggestion-btn:disabled { cursor: default; opacity: 0.3; }
       .suggestion-btn.selected { opacity: 0.5; border-color: var(--accent); color: var(--accent); background: transparent; }
     </style>
-    <script type="module" crossorigin src="/emojis/assets/index-DT_n361z.js"></script>
+    <script type="module" crossorigin src="/emojis/assets/index-BDQWKa36.js"></script>
   </head>
   <body>
 
@@ -595,6 +669,19 @@
             <div style="margin-bottom: 0.6rem;"><span style="display: inline-block; padding: 0.1rem 0.4rem; border-radius: 99px; background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); font-weight: 600; font-size: 0.75rem; margin-right: 0.5rem;">キーワード検索</span> キーワード検索で見つかった関連絵文字</div>
             <div><span style="display: inline-block; padding: 0.1rem 0.4rem; border-radius: 99px; background: color-mix(in srgb, #9d5cff 10%, transparent); color: #9d5cff; border: 1px solid color-mix(in srgb, #9d5cff 30%, transparent); font-weight: 600; font-size: 0.75rem; margin-right: 0.5rem;">LLM推測</span> 直接マッチなし、LLMが推測</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download warning modal -->
+    <div id="download-modal" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
+      <div id="download-modal-box">
+        <h2 id="download-modal-title"><span>⚠️</span> <span id="dm-title"></span></h2>
+        <p class="dm-body" id="dm-body"></p>
+        <div class="dm-size"><span>📦</span> <span id="dm-size"></span></div>
+        <div class="dm-actions">
+          <button id="download-cancel-btn"></button>
+          <button id="download-ok-btn"></button>
         </div>
       </div>
     </div>
