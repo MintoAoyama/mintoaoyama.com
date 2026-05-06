@@ -483,8 +483,60 @@
         border-left: 3px solid var(--accent);
         border-radius: 4px;
       }
+
+      /* ── Suggestions ───────────────────────────────────────────────── */
+      .suggestions-wrap {
+        max-width: 700px;
+        margin: 0 auto 1.25rem;
+        position: relative;
+      }
+      .suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        max-height: calc((0.4rem * 2 + 0.85rem * 1.4 + 1px) * 3.5);
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+      }
+      .suggestions-wrap.expanded .suggestions {
+        max-height: 1000px;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+      .suggestions-fade { display: none; }
+      .suggestions-show-more {
+        display: block;
+        width: 100%;
+        margin-top: 0.4rem;
+        padding: 0;
+        background: none;
+        border: none;
+        color: var(--text3);
+        font-size: 0.78rem;
+        cursor: pointer;
+        text-align: center;
+        transition: color 0.15s;
+      }
+      .suggestions-show-more:hover { color: var(--accent); }
+      .suggestion-btn {
+        padding: 0.4rem 0.85rem;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: var(--bg2);
+        color: var(--text);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .suggestion-btn:hover:not(:disabled) { background: var(--accent); color: #fff; border-color: var(--accent); }
+      .suggestion-btn:disabled { cursor: default; opacity: 0.3; }
+      .suggestion-btn.selected { opacity: 0.5; border-color: var(--accent); color: var(--accent); background: transparent; }
     </style>
-    <script type="module" crossorigin src="/emojis/assets/index-CvjP5MM-.js"></script>
+    <script type="module" crossorigin src="/emojis/assets/index-B4pxXqwc.js"></script>
   </head>
   <body>
 
