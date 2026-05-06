@@ -1,11 +1,10 @@
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `emojis-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   './emoji.json',
 ];
 
-// Install: precache app shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
@@ -13,7 +12,6 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate: delete old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -27,21 +25,38 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: Cache First for app assets, Network First for everything else
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Let WebLLM model fetches (huggingface CDN etc.) pass through — they use IndexedDB cache
+  // WebLLM model fetches (HuggingFace CDN etc.) — pass through, managed by IndexedDB
   if (url.origin !== self.location.origin) {
     return;
   }
 
+  // Vite hashed assets: Network First, fall back to cache for offline support.
+  // Hash changes on every build, so Cache First would serve stale 404s after redeploy.
+  const isHashedAsset = /\/assets\/[^/]+-[A-Za-z0-9]{8,}\.(js|css)(\?.*)?$/.test(url.pathname);
+
+  if (isHashedAsset) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache First for everything else (emoji.json, icons, etc.)
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-
       return fetch(event.request).then((response) => {
-        // Cache successful GET responses for same-origin assets
         if (response.ok && event.request.method === 'GET') {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
