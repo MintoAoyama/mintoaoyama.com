@@ -74,6 +74,7 @@
       .topbar {
         display: flex;
         justify-content: flex-end;
+        gap: 1rem;
         max-width: 700px;
         margin: 0 auto 1.25rem;
         position: relative;
@@ -103,16 +104,16 @@
         width: 2rem;
         height: 2rem;
         padding: 0;
-        border-radius: 8px;
-        border: 1px solid var(--border);
+        border-radius: 50%;
+        border: 1px solid var(--accent);
         background: transparent;
-        color: var(--text2);
+        color: var(--accent);
         cursor: pointer;
         transition: background 0.15s, color 0.15s;
         font-size: 1.1rem;
         font-weight: 600;
       }
-      #help-btn:hover { background: var(--bg2); color: var(--text); }
+      #help-btn:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); }
 
       /* ── Settings popup ───────────────────────────────────────────── */
       #settings-popup {
@@ -471,6 +472,17 @@
         cursor: pointer;
       }
       #update-btn:hover { opacity: 0.85; }
+
+      /* ── Help modal h3 ─────────────────────────────────────────────── */
+      #help-modal h3 {
+        margin: 1.5rem 0 0.8rem 0;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: var(--bg3);
+        border-left: 3px solid var(--accent);
+        border-radius: 4px;
+      }
     </style>
     <script type="module" crossorigin src="/emojis/assets/index-CvjP5MM-.js"></script>
   </head>
@@ -507,14 +519,14 @@
         </div>
       </div>
 
-      <div id="help-modal" role="dialog" aria-label="Help" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: var(--bg); color: var(--text); padding: 2rem; border-radius: 8px; max-width: 540px; max-height: 80vh; overflow-y: auto; position: relative;">
+      <div id="help-modal" role="dialog" aria-label="Help" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center; padding: 1rem;">
+        <div style="background: var(--bg); color: var(--text); padding: 2rem; border-radius: 8px; max-width: 540px; width: 100%; max-height: 80vh; overflow-y: auto; position: relative;">
           <button id="help-close" aria-label="Close help" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: var(--text2); cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">✕</button>
 
           <h2 style="margin-top: 0; margin-bottom: 0.5rem;">emoji:s とは？</h2>
           <p style="margin: 0 0 1.5rem 0; font-size: 0.9rem; color: var(--text2);">「しんどい」「やったー」など、気持ちや状況を日本語で入力すると、ぴったりの絵文字を見つけられるツール。複数の検索ルートを組み合わせて、最適なマッチを実現します。</p>
 
-          <h3 style="margin: 1.5rem 0 0.8rem 0; font-size: 1rem;">検索のしくみ</h3>
+          <h3>検索のしくみ</h3>
           <div style="font-size: 0.85rem; line-height: 1.7; margin-bottom: 1.5rem;">
             <p style="margin: 0.5rem 0;"><strong>①公式辞書マッチ</strong><br/>入力がCLDR公式辞書に直接あれば、最も正確な絵文字を返します。</p>
             <p style="margin: 0.5rem 0;"><strong>②登録フレーズマッチ</strong><br/>「どきどき」「もう無理」など、よく使う日本語フレーズが登録されていればそこから選びます。</p>
@@ -523,7 +535,7 @@
             <p style="margin: 0.5rem 0;"><strong>⑤LLM推測</strong><br/>直接マッチがない場合、LLMが入力の気持ちを理解して、最も近い絵文字を推測します。</p>
           </div>
 
-          <h3 style="margin: 1.5rem 0 0.8rem 0; font-size: 1rem;">カード右上のマッチタイプ</h3>
+          <h3>カード右上のマッチタイプ</h3>
           <div style="font-size: 0.85rem; line-height: 1.8;">
             <div style="margin-bottom: 0.6rem;"><span style="display: inline-block; padding: 0.1rem 0.4rem; border-radius: 99px; background: color-mix(in srgb, var(--ok) 12%, transparent); color: var(--ok); border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent); font-weight: 600; font-size: 0.75rem; margin-right: 0.5rem;">CLDR直接</span> 公式辞書に直接マッチ（最も正確）</div>
             <div style="margin-bottom: 0.6rem;"><span style="display: inline-block; padding: 0.1rem 0.4rem; border-radius: 99px; background: color-mix(in srgb, #10b981 12%, transparent); color: #10b981; border: 1px solid color-mix(in srgb, #10b981 35%, transparent); font-weight: 600; font-size: 0.75rem; margin-right: 0.5rem;">フレーズ登録</span> 登録済みフレーズに完全マッチ</div>
