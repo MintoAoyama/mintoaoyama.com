@@ -1,8 +1,35 @@
-/*! coi-serviceworker v0.1.7 - Guido Zuidhof and contributors, licensed under MIT */
+/*!
+ * Based on coi-serviceworker v0.1.7 by Guido Zuidhof and contributors (MIT License)
+ * https://github.com/gzuidhof/coi-serviceworker
+ *
+ * Modified for emojis: merged with sw.js to also handle offline caching
+ * for same-origin assets (emoji.json, hashed Vite assets, etc.)
+ */
+const CACHE_VERSION = 'v4';
+const CACHE_NAME = `emojis-${CACHE_VERSION}`;
+
 let coepCredentialless = false;
 if (typeof window === 'undefined') {
-    self.addEventListener("install", () => self.skipWaiting());
-    self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
+    self.addEventListener("install", (event) => {
+        event.waitUntil(
+            caches.open(CACHE_NAME).then((cache) => cache.addAll(['./emoji.json']))
+        );
+        self.skipWaiting();
+    });
+    self.addEventListener("activate", (event) => {
+        event.waitUntil(
+            Promise.all([
+                self.clients.claim(),
+                caches.keys().then((keys) =>
+                    Promise.all(
+                        keys
+                            .filter((key) => key.startsWith('emojis-') && key !== CACHE_NAME)
+                            .map((key) => caches.delete(key))
+                    )
+                ),
+            ])
+        );
+    });
 
     self.addEventListener("message", (ev) => {
         if (!ev.data) {
@@ -18,8 +45,28 @@ if (typeof window === 'undefined') {
                 });
         } else if (ev.data.type === "coepCredentialless") {
             coepCredentialless = ev.data.value;
+        } else if (ev.data.type === "SKIP_WAITING") {
+            self.skipWaiting();
         }
     });
+
+    // Build a Response with COOP/COEP/CORP headers added — required for crossOriginIsolated.
+    function withCoopCoepHeaders(response) {
+        if (response.status === 0) return response;
+        const newHeaders = new Headers(response.headers);
+        newHeaders.set("Cross-Origin-Embedder-Policy",
+            coepCredentialless ? "credentialless" : "require-corp"
+        );
+        if (!coepCredentialless) {
+            newHeaders.set("Cross-Origin-Resource-Policy", "cross-origin");
+        }
+        newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
+        return new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: newHeaders,
+        });
+    }
 
     self.addEventListener("fetch", function (event) {
         const r = event.request;
@@ -31,34 +78,58 @@ if (typeof window === 'undefined') {
             return;
         }
 
-        const request = (coepCredentialless && r.mode === "no-cors")
-            ? new Request(r, {
-                credentials: "omit",
-            })
-            : r;
+        const url = new URL(r.url);
+        const sameOrigin = url.origin === self.location.origin;
+
+        // Cross-origin (e.g. WebLLM model fetches from HuggingFace) — only handle COEP, no caching.
+        if (!sameOrigin) {
+            const request = (coepCredentialless && r.mode === "no-cors")
+                ? new Request(r, { credentials: "omit" })
+                : r;
+            event.respondWith(
+                fetch(request)
+                    .then(withCoopCoepHeaders)
+                    .catch((e) => console.error(e))
+            );
+            return;
+        }
+
+        // Same-origin: combine caching strategy from sw.js with COOP/COEP header injection.
+        // Vite hashed assets: Network First (hash changes on rebuild, cache-first would 404).
+        const isHashedAsset = /\/assets\/[^/]+-[A-Za-z0-9]{8,}\.(js|css)(\?.*)?$/.test(url.pathname);
+
+        if (isHashedAsset) {
+            event.respondWith(
+                fetch(r)
+                    .then((response) => {
+                        if (response.ok) {
+                            const clone = response.clone();
+                            caches.open(CACHE_NAME).then((cache) => cache.put(r, clone));
+                        }
+                        return withCoopCoepHeaders(response);
+                    })
+                    .catch(() => caches.match(r).then((cached) =>
+                        cached ? withCoopCoepHeaders(cached) : Response.error()
+                    ))
+            );
+            return;
+        }
+
+        // Cache First for everything else (emoji.json, icons, html, etc.)
         event.respondWith(
-            fetch(request)
-                .then((response) => {
-                    if (response.status === 0) {
-                        return response;
+            caches.match(r).then((cached) => {
+                if (cached) return withCoopCoepHeaders(cached);
+                return fetch(r).then((response) => {
+                    if (response.ok && r.method === 'GET') {
+                        const clone = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(r, clone));
                     }
-
-                    const newHeaders = new Headers(response.headers);
-                    newHeaders.set("Cross-Origin-Embedder-Policy",
-                        coepCredentialless ? "credentialless" : "require-corp"
-                    );
-                    if (!coepCredentialless) {
-                        newHeaders.set("Cross-Origin-Resource-Policy", "cross-origin");
-                    }
-                    newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
-
-                    return new Response(response.body, {
-                        status: response.status,
-                        statusText: response.statusText,
-                        headers: newHeaders,
-                    });
-                })
-                .catch((e) => console.error(e))
+                    return withCoopCoepHeaders(response);
+                });
+            }).catch((e) => {
+                console.error(e);
+                return Response.error();
+            })
         );
     });
 
