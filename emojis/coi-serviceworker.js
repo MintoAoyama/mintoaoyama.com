@@ -11,9 +11,7 @@ const CACHE_NAME = `emojis-${CACHE_VERSION}`;
 let coepCredentialless = false;
 if (typeof window === 'undefined') {
     self.addEventListener("install", (event) => {
-        event.waitUntil(
-            caches.open(CACHE_NAME).then((cache) => cache.addAll(['./emoji.json']))
-        );
+        event.waitUntil(caches.open(CACHE_NAME));
         self.skipWaiting();
     });
     self.addEventListener("activate", (event) => {
@@ -95,6 +93,23 @@ if (typeof window === 'undefined') {
         }
 
         // Same-origin: combine caching strategy from sw.js with COOP/COEP header injection.
+
+        // Navigation requests (HTML): Network First — always fetch latest HTML so hashed asset
+        // references stay in sync. Falls back to cache when offline.
+        if (r.mode === 'navigate') {
+            event.respondWith(
+                fetch(r).then((response) => {
+                    if (response.ok) {
+                        caches.open(CACHE_NAME).then((c) => c.put(r, response.clone()));
+                    }
+                    return withCoopCoepHeaders(response);
+                }).catch(() => caches.match(r).then((cached) =>
+                    cached ? withCoopCoepHeaders(cached) : Response.error()
+                ))
+            );
+            return;
+        }
+
         // Vite hashed assets: Network First (hash changes on rebuild, cache-first would 404).
         const isHashedAsset = /\/assets\/[^/]+-[A-Za-z0-9]{8,}\.(js|css)(\?.*)?$/.test(url.pathname);
 
