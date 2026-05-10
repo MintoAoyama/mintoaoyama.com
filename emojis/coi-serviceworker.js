@@ -5,7 +5,7 @@
  * Modified for emojis: merged with sw.js to also handle offline caching
  * for same-origin assets (emoji.json, hashed Vite assets, etc.)
  */
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `emojis-${CACHE_VERSION}`;
 
 let coepCredentialless = false;
@@ -111,7 +111,7 @@ if (typeof window === 'undefined') {
         }
 
         // Vite hashed assets: Network First (hash changes on rebuild, cache-first would 404).
-        const isHashedAsset = /\/assets\/[^/]+-[A-Za-z0-9]{8,}\.(js|css)(\?.*)?$/.test(url.pathname);
+        const isHashedAsset = /\/assets\/[^/]+-[A-Za-z0-9]{8,}\.(js|css|bin|json|wasm)(\?.*)?$/.test(url.pathname);
 
         if (isHashedAsset) {
             event.respondWith(
@@ -130,7 +130,7 @@ if (typeof window === 'undefined') {
             return;
         }
 
-        // Cache First for everything else (emoji.json, icons, html, etc.)
+        // Cache First for everything else (icons, html, etc.)
         event.respondWith(
             caches.match(r).then((cached) => {
                 if (cached) return withCoopCoepHeaders(cached);
