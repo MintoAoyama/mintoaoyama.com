@@ -5,7 +5,7 @@
  * Modified for emojis: merged with sw.js to also handle offline caching
  * for same-origin assets (emoji.json, hashed Vite assets, etc.)
  */
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = `emojis-${CACHE_VERSION}`;
 
 let coepCredentialless = false;
