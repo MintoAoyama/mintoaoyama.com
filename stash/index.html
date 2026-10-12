@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="stash-base" content="/stash/">
+<title>stash</title>
+<link rel="stylesheet" href="/stash/assets/site.css">
+<script type="module" src="/stash/assets/site.js"></script>
+
+</head>
+<body>
+<header class="site-header">
+<a class="site-title" href="/stash/">stash</a>
+<nav class="site-nav">
+<a href="/stash/type/movie/">映画</a><a href="/stash/type/tv/">TV</a><a href="/stash/type/streaming/">配信</a><a href="/stash/type/music/">音楽</a><a href="/stash/type/book/">本</a>
+<a href="/stash/d/">ディレクトリ</a>
+<a href="/stash/t/">タグ</a>
+</nav>
+</header>
+<main>
+<h1 class="visually-hidden">stash</h1>
+<section class="stats" aria-label="記録の数"><span data-stat="works">-</span> 作品 · <span data-stat="logs">-</span> 件の記録</section>
+<section class="on-this-day" hidden><h2>過去の今日</h2><ul></ul></section>
+<section class="recent"><h2>最近の記録</h2><ol class="timeline"></ol></section>
+<section class="years"><h2>年ごと</h2><ul class="months"></ul></section>
+</main>
+<footer class="site-footer">
+<p>作品情報の一部は TMDB API を利用しています（This product uses the TMDB API but is not endorsed or certified by TMDB）</p>
+</footer>
+</body>
+</html>
