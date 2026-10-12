@@ -198,7 +198,7 @@ not redistributed with emoji:s.
 
 The app bundles dependencies which contain the following licenses:
 
-## @huggingface/transformers - 4.2.0 (Apache-2.0)
+## @huggingface/transformers - 4.3.0 (Apache-2.0)
 
 Apache License
                            Version 2.0, January 2004
@@ -616,6 +616,6 @@ Apache Software Foundation License 2.0
 
 src/openai_api_protocols
 
-## onnxruntime-common - 1.24.3 (MIT)
+## onnxruntime-common - 1.30.0 (MIT)
 
-## onnxruntime-web - 1.26.0-dev.20260416-b7804b056c (MIT)
+## onnxruntime-web - 1.31.0-dev.20260914-8d85527a0 (MIT)
