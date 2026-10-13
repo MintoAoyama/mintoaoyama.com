@@ -11,11 +11,30 @@ const el = (tag, attrs = {}, text) => {
 // Same shard rule as workShard in src/pages.ts.
 const workLink = (id, title) => el('a', { href: `${base}w/${encodeURIComponent(id.slice(-1))}/${encodeURIComponent(id)}/` }, title);
 
+// The links are hidden in the HTML so that no page depends on what exists elsewhere.
+function showNav(data) {
+  for (const link of document.querySelectorAll('[data-nav-type]')) link.hidden = !data.counts.byType[link.dataset.navType];
+  for (const link of document.querySelectorAll('[data-nav-seasons]')) link.hidden = !data.counts.seasons;
+}
+
 function fillStats(data) {
   for (const node of document.querySelectorAll('[data-stat]')) {
     const value = data.counts[node.dataset.stat];
     if (value !== undefined) node.textContent = String(value);
   }
+}
+
+function fillWatching(data) {
+  const section = document.querySelector('.watching');
+  if (!section || data.watching.length === 0) return;
+  const list = section.querySelector('ul');
+  for (const w of data.watching) {
+    const progress = w.episodeCount ? `第${w.episode}話まで / ${w.episodeCount}` : `第${w.episode}話まで`;
+    const li = el('li');
+    li.append(workLink(w.id, w.title), ' ', el('span', { class: 'count' }, `${[w.channel, progress].filter(Boolean).join(' · ')} · `), el('time', { class: 'count', datetime: w.loggedAt }, w.loggedAt));
+    list.append(li);
+  }
+  section.hidden = false;
 }
 
 function fillRecent(data) {
@@ -59,7 +78,9 @@ try {
   const res = await fetch(`${base}data/site.json`);
   if (res.ok) {
     const data = await res.json();
+    showNav(data);
     fillStats(data);
+    fillWatching(data);
     fillRecent(data);
     fillYears(data);
     fillOnThisDay(data);

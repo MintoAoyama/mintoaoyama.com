@@ -101,6 +101,10 @@ h1 {
   font-size: 0.85rem;
 }
 
+time {
+  white-space: nowrap;
+}
+
 .rating {
   color: var(--star);
   letter-spacing: 0.05em;
@@ -167,11 +171,47 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   gap: 1rem;
+  align-items: start;
 }
 
 .card a {
   display: block;
   text-decoration: none;
+}
+
+.cards--text {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  align-items: stretch;
+}
+
+.card--text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.card--text a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.card--text:hover {
+  border-color: var(--accent);
+}
+
+.card--text:has(a:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card--text .card-title {
+  margin-top: 0;
 }
 
 .card-title {
@@ -190,15 +230,13 @@ h1 {
   background: var(--line);
 }
 
-.cover--empty {
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
 .cover--full {
   width: 10rem;
+  flex-shrink: 0;
+}
+
+.cover--small {
+  width: 4.5rem;
   flex-shrink: 0;
 }
 
@@ -217,6 +255,7 @@ h1 {
 .tags,
 .dirs,
 .tag-cloud,
+.seasons,
 .months {
   list-style: none;
   padding: 0;
@@ -226,12 +265,14 @@ h1 {
 }
 
 .log-list,
+.season-works,
 .timeline {
   list-style: none;
   padding: 0;
 }
 
 .log,
+.season-work,
 .timeline li {
   border-top: 1px solid var(--line);
   padding-block: 0.75rem;
@@ -240,6 +281,130 @@ h1 {
 .log p,
 .timeline p {
   margin: 0.25rem 0 0;
+}
+
+.progress {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-author,
+.progress-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.progress-author {
+  flex: 0 0 4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress-count {
+  flex: none;
+}
+
+.progress-cells {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ep {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.ep--seen {
+  background: var(--accent);
+}
+
+.season-work {
+  display: flex;
+  gap: 1rem;
+}
+
+.season-work > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.season-cover {
+  flex: none;
+}
+
+.season-title {
+  font-weight: 600;
+}
+
+.season-work .work-meta {
+  margin: 0;
+}
+
+.log-title {
+  display: block;
+  font-weight: 600;
+}
+
+.log p.log-more {
+  font-size: 0.85rem;
+}
+
+.log-page-head {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.log-page-head > div {
+  min-width: 0;
+}
+
+.log-page-head h1 {
+  margin: 0.1rem 0;
+}
+
+.log-work {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.log-same {
+  margin: 1.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.log-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.log-same + .log-nav {
+  margin-top: 0.75rem;
+}
+
+.log-nav a[rel="next"] {
+  margin-left: auto;
+  text-align: right;
 }
 
 .logs--by-author {

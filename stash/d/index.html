@@ -14,7 +14,8 @@ body:has(#fa-0:checked) .card:not([data-a~="a0"]){display:none}</style>
 <header class="site-header">
 <a class="site-title" href="/stash/">stash</a>
 <nav class="site-nav">
-<a href="/stash/type/movie/">映画</a><a href="/stash/type/tv/">TV</a><a href="/stash/type/streaming/">配信</a><a href="/stash/type/music/">音楽</a><a href="/stash/type/book/">本</a>
+<a href="/stash/type/tv/" data-nav-type="tv" hidden>TV</a><a href="/stash/type/movie/" data-nav-type="movie" hidden>映画</a><a href="/stash/type/streaming/" data-nav-type="streaming" hidden>配信</a><a href="/stash/type/music/" data-nav-type="music" hidden>音楽</a><a href="/stash/type/book/" data-nav-type="book" hidden>本</a><a href="/stash/type/other/" data-nav-type="other" hidden>その他</a>
+<a href="/stash/s/" data-nav-seasons hidden>シーズン</a>
 <a href="/stash/d/">ディレクトリ</a>
 <a href="/stash/t/">タグ</a>
 </nav>
@@ -22,13 +23,14 @@ body:has(#fa-0:checked) .card:not([data-a~="a0"]){display:none}</style>
 <main>
 <nav class="breadcrumbs"><a href="/stash/d/">/</a></nav><h1>ディレクトリ</h1>
 
-<div class="filters"></div><ul class="cards"><li class="card" data-type="book" data-a="a0">
-<a href="/stash/w/k/mv5far8s87bk/"><div class="cover cover--thumb cover--empty" aria-hidden="true">本</div><span class="card-title">test</span></a>
+<div class="filters"></div><ul class="cards cards--text"><li class="card card--text" data-type="book" data-a="a0">
+<a href="/stash/w/k/mv5far8s87bk/"><span class="card-title">test</span></a>
 <span class="card-meta">本 · <time datetime="2026-10-13">2026-10-13</time> </span>
 </li></ul>
 </main>
 <footer class="site-footer">
 <p>作品情報の一部は TMDB API を利用しています（This product uses the TMDB API but is not endorsed or certified by TMDB）</p>
+
 </footer>
 </body>
 </html>
