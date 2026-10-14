@@ -1,23 +1,29 @@
 :root {
-  --bg: #fbfaf7;
-  --fg: #1f1d1a;
-  --muted: #6b665e;
-  --line: #e3dfd6;
-  --card: #ffffff;
-  --accent: #b4532a;
-  --star: #c98a12;
+  --bg: #f6f4f0;
+  --fg: #273349;
+  --muted: #5d6577;
+  --line: #e2ded6;
+  --card: #fffdf9;
+  --accent: #273349;
+  --focus: #955800;
+  --star: #955800;
+  --episode: #955800;
+  --subtitle: #2a7350;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #161513;
-    --fg: #ece8e1;
-    --muted: #a39d93;
-    --line: #34312c;
-    --card: #1f1d1a;
-    --accent: #e08a5f;
-    --star: #e2b34a;
+    --bg: #161d2b;
+    --fg: #efebe5;
+    --muted: #a2a9b8;
+    --line: #2c3548;
+    --card: #1d2537;
+    --accent: #f2b252;
+    --focus: #f2b252;
+    --star: #f2b252;
+    --episode: #f2b252;
+    --subtitle: #8fd3ae;
     color-scheme: dark;
   }
 }
@@ -168,7 +174,7 @@ time {
 }
 
 .filter label:has(input:focus-visible) {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -213,7 +219,7 @@ time {
 }
 
 .card--text:has(a:focus-visible) {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -365,6 +371,14 @@ time {
 .log-title {
   display: block;
   font-weight: 600;
+}
+
+.log-ep {
+  color: var(--episode);
+}
+
+.log-sub {
+  color: var(--subtitle);
 }
 
 .log p.log-more {
