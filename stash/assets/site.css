@@ -66,9 +66,16 @@ main {
 }
 
 .site-title {
+  align-self: center;
   font-weight: 700;
   font-size: 1.25rem;
   text-decoration: none;
+}
+
+.site-logo {
+  display: block;
+  height: 1.75rem;
+  width: auto;
 }
 
 .site-nav {
