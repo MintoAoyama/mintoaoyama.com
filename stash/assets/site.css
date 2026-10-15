@@ -277,6 +277,11 @@ time {
   gap: 0.25rem 1rem;
 }
 
+.weeks .range {
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
 .log-list,
 .season-works,
 .timeline {
