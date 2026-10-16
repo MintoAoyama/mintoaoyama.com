@@ -390,6 +390,80 @@ time {
   font-size: 0.85rem;
 }
 
+.log-text h3,
+.log-text h4,
+.log-text h5,
+.log-text h6 {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 1rem 0 0.25rem;
+}
+
+.log-text h3 {
+  font-size: 1.1rem;
+}
+
+.log-text ul,
+.log-text ol {
+  margin: 0.25rem 0 0;
+  padding-left: 1.5em;
+}
+
+/* Inside the list of logs a list would otherwise take the marker of a nested list. */
+.log-text ul {
+  list-style: disc;
+}
+
+.log-text blockquote {
+  margin: 0.5rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--line);
+  color: var(--muted);
+}
+
+.log-text code {
+  font-size: 0.9em;
+  padding: 0 0.25em;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--card);
+}
+
+.log-text pre {
+  overflow-x: auto;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+}
+
+.log-text pre code {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.log-text img {
+  max-width: 100%;
+  height: auto;
+}
+
+.md-table {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
+.md-table table {
+  border-collapse: collapse;
+}
+
+.md-table th,
+.md-table td {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
 .log-page-head {
   display: flex;
   gap: 1rem;
