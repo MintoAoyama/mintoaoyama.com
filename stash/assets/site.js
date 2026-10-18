@@ -49,6 +49,7 @@ function fillRecent(data) {
     const li = el('li');
     li.append(el('time', { datetime: r.loggedAt }, r.loggedAt), ' ', workLink(r.id, r.title), ' ', el('span', { class: 'author' }, r.author));
     if (r.rating) li.append(' ', el('span', { class: 'rating' }, '★'.repeat(r.rating)));
+    if (r.aired) li.append(' ', el('span', { class: 'watched' }, `${r.aired} 放送`));
     list.append(li);
   }
 }

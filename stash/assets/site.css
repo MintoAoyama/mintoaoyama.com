@@ -109,7 +109,8 @@ h1 {
 .author,
 .breadcrumbs,
 .work-meta,
-.program {
+.program,
+.watched {
   color: var(--muted);
   font-size: 0.85rem;
 }
