@@ -29,14 +29,26 @@ function fillStats(data) {
   }
 }
 
-function fillWatching(data) {
-  const section = document.querySelector('.watching');
-  if (!section || data.watching.length === 0) return;
+const SEASONS = [['winter', '冬'], ['spring', '春'], ['summer', '夏'], ['autumn', '秋']];
+
+// The season of the day the page is opened, like the schema's: winter is January to March.
+function fillThisSeason(data) {
+  const section = document.querySelector('.this-season');
+  if (!section) return;
+  const now = new Date();
+  const [name, label] = SEASONS[Math.floor(now.getMonth() / 3)];
+  const season = `${now.getFullYear()}-${name}`;
+  const works = data.seasonWorks[season] ?? [];
+  if (works.length === 0) return;
+  const link = section.querySelector('.season-link');
+  link.href = `${base}s/${season}/`;
+  link.textContent = `${now.getFullYear()}${label}`;
   const list = section.querySelector('ul');
-  for (const w of data.watching) {
-    const progress = w.episodeCount ? `第${w.episode}話まで / ${w.episodeCount}` : `第${w.episode}話まで`;
+  for (const w of works) {
+    const progress = w.episode === null ? '' : w.episodeCount ? `第${w.episode}話まで / ${w.episodeCount}` : `第${w.episode}話まで`;
+    const meta = [w.channel, progress, w.loggedAt].filter(Boolean).join(' · ');
     const li = el('li');
-    li.append(workLink(w.id, w.title), ' ', el('span', { class: 'count' }, `${[w.channel, progress].filter(Boolean).join(' · ')} · `), el('time', { class: 'count', datetime: w.loggedAt }, w.loggedAt));
+    li.append(workLink(w.id, w.title), ' ', el('span', { class: 'count' }, meta));
     list.append(li);
   }
   section.hidden = false;
@@ -54,12 +66,29 @@ function fillRecent(data) {
   }
 }
 
-function fillYears(data) {
-  const list = document.querySelector('.years .months');
+// One row per year with a cell for each month, like the archive of a blog.
+function fillArchive(data) {
+  const list = document.querySelector('.archive-years');
   if (!list) return;
   for (const y of data.years) {
+    const months = el('ol', { class: 'archive-months' });
+    y.months.forEach((n, i) => {
+      const li = el('li');
+      const label = el('span', { class: 'archive-month' }, `${i + 1}月`);
+      if (n === 0) {
+        li.className = 'is-empty';
+        li.append(label);
+      } else {
+        const a = el('a', { href: `${base}m/${y.year}/${String(i + 1).padStart(2, '0')}/` });
+        a.append(label, el('span', { class: 'count' }, String(n)));
+        li.append(a);
+      }
+      months.append(li);
+    });
     const li = el('li');
-    li.append(el('a', { href: `${base}m/${y.year}/` }, `${y.year}年`), ' ', el('span', { class: 'count' }, String(y.logs)));
+    const head = el('div', { class: 'archive-year' });
+    head.append(el('a', { href: `${base}m/${y.year}/` }, `${y.year}年`), ' ', el('span', { class: 'count' }, `${y.logs} 件`));
+    li.append(head, months);
     list.append(li);
   }
 }
@@ -87,9 +116,9 @@ try {
     showNav(data);
     showAuthors(data);
     fillStats(data);
-    fillWatching(data);
+    fillThisSeason(data);
     fillRecent(data);
-    fillYears(data);
+    fillArchive(data);
     fillOnThisDay(data);
   }
 } catch (e) {

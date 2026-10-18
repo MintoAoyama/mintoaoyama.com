@@ -278,6 +278,73 @@ time {
   gap: 0.25rem 1rem;
 }
 
+.archive-years {
+  list-style: none;
+  padding: 0;
+}
+
+.archive-years > li {
+  border-top: 1px solid var(--line);
+  padding-block: 0.75rem;
+}
+
+.archive-year {
+  font-weight: 600;
+}
+
+.archive-year .count {
+  font-weight: 400;
+}
+
+.archive-months {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.25rem;
+}
+
+@media (max-width: 40rem) {
+  .archive-months {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.archive-months > li {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.archive-months a,
+.archive-months .archive-month {
+  display: block;
+  padding: 0.35rem 0.25rem;
+}
+
+.archive-months a {
+  text-decoration: none;
+}
+
+.archive-months a .archive-month {
+  padding: 0;
+  font-weight: 600;
+}
+
+.archive-months a .count {
+  display: block;
+}
+
+.archive-months .is-empty {
+  background: transparent;
+  border-style: dashed;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
 .weeks .range {
   color: var(--muted);
   font-size: 0.85em;
