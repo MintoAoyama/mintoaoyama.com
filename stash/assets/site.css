@@ -520,3 +520,8 @@ time {
 .logs--by-author .author {
   display: none;
 }
+
+/* site.js sets data-authors once data/site.json has more than one author */
+:root:not([data-authors="many"]) :is(.author, .progress-author) {
+  display: none;
+}

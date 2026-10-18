@@ -17,6 +17,11 @@ function showNav(data) {
   for (const link of document.querySelectorAll('[data-nav-seasons]')) link.hidden = !data.counts.seasons;
 }
 
+// Author names are hidden in the HTML until a second author has written.
+function showAuthors(data) {
+  if (data.counts.authors > 1) document.documentElement.dataset.authors = 'many';
+}
+
 function fillStats(data) {
   for (const node of document.querySelectorAll('[data-stat]')) {
     const value = data.counts[node.dataset.stat];
@@ -79,6 +84,7 @@ try {
   if (res.ok) {
     const data = await res.json();
     showNav(data);
+    showAuthors(data);
     fillStats(data);
     fillWatching(data);
     fillRecent(data);
