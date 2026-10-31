@@ -351,14 +351,12 @@ time {
 }
 
 .log-list,
-.season-works,
 .timeline {
   list-style: none;
   padding: 0;
 }
 
 .log,
-.season-work,
 .timeline li {
   border-top: 1px solid var(--line);
   padding-block: 0.75rem;
@@ -419,26 +417,27 @@ time {
   background: var(--accent);
 }
 
-.season-work {
-  display: flex;
-  gap: 1rem;
+/* Titles take two lines at most, and get two lines whether they need them or not so the rows of cards line up.
+   One column has no rows to line up. */
+.cards--season .card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
-.season-work > div {
-  flex: 1;
-  min-width: 0;
+@media (min-width: 40rem) {
+  .cards--season .card-title {
+    min-height: 2.8em;
+  }
 }
 
-.season-cover {
-  flex: none;
-}
-
-.season-title {
-  font-weight: 600;
-}
-
-.season-work .work-meta {
-  margin: 0;
+/* Above the link that covers a text card, so that each cell opens its own log. */
+.card .progress {
+  position: relative;
+  z-index: 1;
+  margin: 0.25rem 0 0;
 }
 
 .log-title {
