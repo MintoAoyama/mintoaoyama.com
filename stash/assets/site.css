@@ -592,3 +592,24 @@ time {
 :root:not([data-authors="many"]) :is(.author, .progress-author) {
   display: none;
 }
+
+.card-group h2 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.card-heading {
+  font-size: 0.85rem;
+}
+
+.card-digest {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.this-season .more {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+}
