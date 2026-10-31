@@ -609,6 +609,20 @@ time {
   overflow-wrap: anywhere;
 }
 
+.card--digest .card-heading {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.card--digest .card-digest {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
 .this-season .more {
   margin: 0.75rem 0 0;
   font-size: 0.9rem;
