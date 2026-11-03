@@ -1,7 +1,4 @@
 // Fills the parts of pages that depend on the whole data set (data/site.json).
-import { attachHistory } from './search-history.js';
-
-for (const input of document.querySelectorAll('.site-search input')) attachHistory(input);
 const base = document.querySelector('meta[name="stash-base"]')?.content ?? '/';
 
 const el = (tag, attrs = {}, text) => {
@@ -12,8 +9,7 @@ const el = (tag, attrs = {}, text) => {
 };
 
 // Same shard rule as workShard in src/pages.ts.
-const workHref = (id) => `${base}w/${encodeURIComponent(id.slice(-1))}/${encodeURIComponent(id)}/`;
-const workLink = (id, title) => el('a', { href: workHref(id) }, title);
+const workLink = (id, title) => el('a', { href: `${base}w/${encodeURIComponent(id.slice(-1))}/${encodeURIComponent(id)}/` }, title);
 
 // The links are hidden in the HTML so that no page depends on what exists elsewhere.
 function showNav(data) {
@@ -33,96 +29,37 @@ function fillStats(data) {
   }
 }
 
-const SEASONS = [['winter', '冬'], ['spring', '春'], ['summer', '夏'], ['autumn', '秋']];
-const THIS_SEASON_CARDS = 6;
-const RECENT_CARDS = 9;
-
-// The season of the day the page is opened, like the schema's: winter is January to March.
-function thisSeason() {
-  const now = new Date();
-  const [name, label] = SEASONS[Math.floor(now.getMonth() / 3)];
-  return { season: `${now.getFullYear()}-${name}`, label: `${now.getFullYear()}${label}` };
-}
-
-// A text card with the start of a log (digest), cut as the work page cuts it.
-// The author goes apart from the meta: it is hidden while there is one author, and its separator with it.
-function digestCard(href, title, meta, r, author = '') {
-  const li = el('li', { class: 'card card--text card--digest' });
-  const a = el('a', { href });
-  a.append(el('span', { class: 'card-title' }, title));
-  const info = el('span', { class: 'card-meta' });
-  meta.filter(Boolean).forEach((m, i) => info.append(i === 0 ? '' : ' · ', m));
-  if (author) info.append(el('span', { class: 'author' }, ` · ${author}`));
-  if (r.rating) info.append(' ', el('span', { class: 'rating', 'aria-label': `評価 ${r.rating} / 5` }, '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating)));
-  li.append(a, info);
-  if (r.heading) li.append(el('span', { class: 'card-heading' }, r.heading));
-  if (r.digest) li.append(el('p', { class: 'card-digest' }, r.digest));
-  return li;
-}
-
-// The works of the season most recently logged; the season page has them all.
-function fillThisSeason(data) {
-  const section = document.querySelector('.this-season');
-  if (!section) return;
-  const { season, label } = thisSeason();
-  const works = data.seasonWorks[season] ?? [];
-  if (works.length === 0) return;
-  const link = section.querySelector('.season-link');
-  link.href = `${base}s/${season}/`;
-  link.textContent = label;
+function fillWatching(data) {
+  const section = document.querySelector('.watching');
+  if (!section || data.watching.length === 0) return;
   const list = section.querySelector('ul');
-  for (const w of works.slice(0, THIS_SEASON_CARDS)) {
-    const progress = w.episode === null ? '' : w.episodeCount ? `第${w.episode}話まで / ${w.episodeCount}` : `第${w.episode}話まで`;
-    list.append(digestCard(workHref(w.id), w.title, [w.channel, progress, w.loggedAt], w));
-  }
-  if (works.length > THIS_SEASON_CARDS) {
-    const more = section.querySelector('.season-more');
-    more.href = link.href;
-    more.textContent = `${label}の ${works.length} 件をすべて見る`;
-    more.parentElement.hidden = false;
+  for (const w of data.watching) {
+    const progress = w.episodeCount ? `第${w.episode}話まで / ${w.episodeCount}` : `第${w.episode}話まで`;
+    const li = el('li');
+    li.append(workLink(w.id, w.title), ' ', el('span', { class: 'count' }, `${[w.channel, progress].filter(Boolean).join(' · ')} · `), el('time', { class: 'count', datetime: w.loggedAt }, w.loggedAt));
+    list.append(li);
   }
   section.hidden = false;
 }
 
-// The newest logs of works outside the season shown above.
 function fillRecent(data) {
-  const section = document.querySelector('.recent');
-  if (!section) return;
-  const { season } = thisSeason();
-  const logs = data.recent.filter((r) => r.season !== season).slice(0, RECENT_CARDS);
-  if (logs.length === 0) return;
-  const list = section.querySelector('ul');
-  for (const r of logs) {
-    const date = el('time', { datetime: r.loggedAt }, r.loggedAt);
-    const meta = [date, r.aired ? el('span', { class: 'watched' }, `${r.aired} 放送`) : ''];
-    list.append(digestCard(`${workHref(r.id)}${encodeURIComponent(r.log)}/`, r.title, meta, r, r.author));
+  const list = document.querySelector('.recent .timeline');
+  if (!list) return;
+  for (const r of data.recent) {
+    const li = el('li');
+    li.append(el('time', { datetime: r.loggedAt }, r.loggedAt), ' ', workLink(r.id, r.title), ' ', el('span', { class: 'author' }, r.author));
+    if (r.rating) li.append(' ', el('span', { class: 'rating' }, '★'.repeat(r.rating)));
+    if (r.aired) li.append(' ', el('span', { class: 'watched' }, `${r.aired} 放送`));
+    list.append(li);
   }
-  section.hidden = false;
 }
 
-// One row per year with a cell for each month, like the archive of a blog.
-function fillArchive(data) {
-  const list = document.querySelector('.archive-years');
+function fillYears(data) {
+  const list = document.querySelector('.years .months');
   if (!list) return;
   for (const y of data.years) {
-    const months = el('ol', { class: 'archive-months' });
-    y.months.forEach((n, i) => {
-      const li = el('li');
-      const label = el('span', { class: 'archive-month' }, `${i + 1}月`);
-      if (n === 0) {
-        li.className = 'is-empty';
-        li.append(label);
-      } else {
-        const a = el('a', { href: `${base}m/${y.year}/${String(i + 1).padStart(2, '0')}/` });
-        a.append(label, el('span', { class: 'count' }, String(n)));
-        li.append(a);
-      }
-      months.append(li);
-    });
     const li = el('li');
-    const head = el('div', { class: 'archive-year' });
-    head.append(el('a', { href: `${base}m/${y.year}/` }, `${y.year}年`), ' ', el('span', { class: 'count' }, `${y.logs} 件`));
-    li.append(head, months);
+    li.append(el('a', { href: `${base}m/${y.year}/` }, `${y.year}年`), ' ', el('span', { class: 'count' }, String(y.logs)));
     list.append(li);
   }
 }
@@ -150,9 +87,9 @@ try {
     showNav(data);
     showAuthors(data);
     fillStats(data);
-    fillThisSeason(data);
+    fillWatching(data);
     fillRecent(data);
-    fillArchive(data);
+    fillYears(data);
     fillOnThisDay(data);
   }
 } catch (e) {

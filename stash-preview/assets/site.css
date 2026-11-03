@@ -9,7 +9,6 @@
   --star: #955800;
   --episode: #955800;
   --subtitle: #2a7350;
-  --mark: #f6dda3;
   color-scheme: light;
 }
 
@@ -25,7 +24,6 @@
     --star: #f2b252;
     --episode: #f2b252;
     --subtitle: #8fd3ae;
-    --mark: #6a4b16;
     color-scheme: dark;
   }
 }
@@ -280,85 +278,20 @@ time {
   gap: 0.25rem 1rem;
 }
 
-.archive-years {
-  list-style: none;
-  padding: 0;
-}
-
-.archive-years > li {
-  border-top: 1px solid var(--line);
-  padding-block: 0.75rem;
-}
-
-.archive-year {
-  font-weight: 600;
-}
-
-.archive-year .count {
-  font-weight: 400;
-}
-
-.archive-months {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 0.25rem;
-}
-
-@media (max-width: 40rem) {
-  .archive-months {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-.archive-months > li {
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--card);
-  text-align: center;
-  line-height: 1.4;
-}
-
-.archive-months a,
-.archive-months .archive-month {
-  display: block;
-  padding: 0.35rem 0.25rem;
-}
-
-.archive-months a {
-  text-decoration: none;
-}
-
-.archive-months a .archive-month {
-  padding: 0;
-  font-weight: 600;
-}
-
-.archive-months a .count {
-  display: block;
-}
-
-.archive-months .is-empty {
-  background: transparent;
-  border-style: dashed;
-  color: var(--muted);
-  opacity: 0.6;
-}
-
 .weeks .range {
   color: var(--muted);
   font-size: 0.85em;
 }
 
 .log-list,
+.season-works,
 .timeline {
   list-style: none;
   padding: 0;
 }
 
 .log,
+.season-work,
 .timeline li {
   border-top: 1px solid var(--line);
   padding-block: 0.75rem;
@@ -419,27 +352,26 @@ time {
   background: var(--accent);
 }
 
-/* Titles take two lines at most, and get two lines whether they need them or not so the rows of cards line up.
-   One column has no rows to line up. */
-.cards--season .card-title {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
+.season-work {
+  display: flex;
+  gap: 1rem;
 }
 
-@media (min-width: 40rem) {
-  .cards--season .card-title {
-    min-height: 2.8em;
-  }
+.season-work > div {
+  flex: 1;
+  min-width: 0;
 }
 
-/* Above the link that covers a text card, so that each cell opens its own log. */
-.card .progress {
-  position: relative;
-  z-index: 1;
-  margin: 0.25rem 0 0;
+.season-cover {
+  flex: none;
+}
+
+.season-title {
+  font-weight: 600;
+}
+
+.season-work .work-meta {
+  margin: 0;
 }
 
 .log-title {
@@ -593,200 +525,4 @@ time {
 /* site.js sets data-authors once data/site.json has more than one author */
 :root:not([data-authors="many"]) :is(.author, .progress-author) {
   display: none;
-}
-
-.card-group h2 {
-  font-size: 1.1rem;
-  margin: 1.5rem 0 0.5rem;
-}
-
-.card-heading {
-  font-size: 0.85rem;
-}
-
-.card-digest {
-  margin: 0.25rem 0 0;
-  font-size: 0.9rem;
-  white-space: pre-line;
-  overflow-wrap: anywhere;
-}
-
-.card--digest .card-heading {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-.card--digest .card-digest {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  overflow: hidden;
-}
-
-.this-season .more {
-  margin: 0.75rem 0 0;
-  font-size: 0.9rem;
-}
-
-.site-search {
-  align-self: center;
-  flex: 0 1 14rem;
-  margin-left: auto;
-}
-
-@media (max-width: 40rem) {
-  .site-search {
-    flex-basis: 100%;
-  }
-}
-
-.site-search input,
-.search-form input {
-  width: 100%;
-  font: inherit;
-  color: inherit;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.25rem 0.9rem;
-}
-
-/* iOS zooms into a box whose text is smaller than 16px when it is tapped. */
-.site-search input {
-  font-size: 1rem;
-}
-
-.search-form input {
-  padding: 0.5rem 1rem;
-}
-
-.site-search input:focus-visible,
-.search-form input:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 1px;
-}
-
-mark {
-  background: var(--mark);
-  color: inherit;
-  border-radius: 2px;
-}
-
-.search-section h2 {
-  font-size: 1.1rem;
-  margin: 1.5rem 0 0.5rem;
-}
-
-.search-logs {
-  list-style: none;
-  padding: 0;
-}
-
-.search-log {
-  border-top: 1px solid var(--line);
-  padding-block: 0.75rem;
-}
-
-.search-log-title {
-  display: block;
-  font-weight: 600;
-}
-
-.search-log-heading {
-  font-weight: 400;
-  color: var(--muted);
-}
-
-.search-snippet {
-  margin: 0.25rem 0 0;
-  font-size: 0.9rem;
-}
-
-.site-search,
-.search-form {
-  position: relative;
-}
-
-.search-suggest {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  z-index: 10;
-  padding: 0.25rem 0;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--card);
-  box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
-  font-size: 0.9rem;
-}
-
-.search-suggest ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.search-suggest li {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.search-suggest li span {
-  flex: 1;
-  min-width: 0;
-  padding: 0.3rem 0.9rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.search-suggest li:hover,
-.search-suggest li[aria-selected="true"] {
-  background: var(--line);
-}
-
-.search-suggest button {
-  font: inherit;
-  color: var(--muted);
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-
-.search-suggest li button {
-  padding: 0.3rem 0.9rem;
-}
-
-.search-suggest-clear {
-  display: block;
-  width: 100%;
-  margin-top: 0.25rem;
-  padding: 0.4rem 0.9rem 0.2rem;
-  border-top: 1px solid var(--line) !important;
-  text-align: left;
-  font-size: 0.85rem;
-}
-
-.search-suggest-clear:hover {
-  color: var(--fg);
-}
-
-/* Rows and buttons a finger can hit. */
-@media (pointer: coarse) {
-  .search-suggest li span,
-  .search-suggest li button {
-    padding-block: 0.65rem;
-  }
-
-  .search-suggest li button {
-    padding-inline: 1.1rem;
-  }
-
-  .search-suggest-clear {
-    padding-block: 0.65rem 0.45rem;
-  }
 }
