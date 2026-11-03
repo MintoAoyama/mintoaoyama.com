@@ -1,4 +1,7 @@
 // Fills the parts of pages that depend on the whole data set (data/site.json).
+import { attachHistory } from './search-history.js';
+
+for (const input of document.querySelectorAll('.site-search input')) attachHistory(input);
 const base = document.querySelector('meta[name="stash-base"]')?.content ?? '/';
 
 const el = (tag, attrs = {}, text) => {
